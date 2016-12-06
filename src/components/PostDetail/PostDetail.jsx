@@ -5,6 +5,7 @@ import axios from 'axios'
 
 import apiUrl from 'apis/config.js'
 import c from './style.scss'
+import ajax from 'apis/ajax.js'
 
 
 export default class Collect extends React.Component {
@@ -13,13 +14,15 @@ export default class Collect extends React.Component {
     this.state = {
       post: {},
       interactList: [],
-      isShowCommentBox: false
+      isShowCommentBox: false,
+      is_like: false
     }
   }
   componentWillMount () {
     const _this = this
     axios.get(apiUrl.postDetail + this.props.params.id).then(res => {
       this.setState({
+        is_like: res.data.is_like,
         post: res.data.post,
         interactList: res.data.interact_list
       })
@@ -37,20 +40,28 @@ export default class Collect extends React.Component {
     }
 
   }
-  publishComment () {
-    $.post(apiUrl.replyPost, {
-      content: this.refs.commentText.value.trim(),
-      type: 1,
+  publishComment (type) {
+    const data = {
       post_id: this.state.post.id,
-      bang_token: localStorage.getItem('bang_token'),
-      bang_account: localStorage.getItem('account')
-    }, (v) => {
-      const interactList = [...this.state.interactList]
-      interactList.unshift(v.interact)
-      this.setState({isShowCommentBox: false, interactList})
+      type
+    }
+    if (type === 1) {
+      Object.assign(data, {
+        content: this.refs.commentText.value.trim()
+      })
+    }
+    ajax.post(apiUrl.replyPost, data, (v) => {
+      if (parseInt(v.interact.type) === 1) {
+        const interactList = [...this.state.interactList]
+        interactList.unshift(v.interact)
+        this.setState({isShowCommentBox: false, interactList})
+      } else {
+        this.setState({is_like: true})
+      }
     })
   }
   render () {
+    console.log(this.state.post, 'sd')
     return (
       <div className='post-detail'>
         <div className='outer'>
@@ -67,8 +78,8 @@ export default class Collect extends React.Component {
                 <p className='content'>{this.state.post.content}</p>
                 <a className='comment' onClick={this.changeCommentBox.bind(this)}>参与评论</a>
                 {
-                  this.state.post.is_like ?
-                  (<i className='iconfont praise red'>&#xe601;</i>) : (<i className='iconfont praise'>&#xe601;</i>)
+                  this.state.is_like ?
+                  (<i className='iconfont praise red'>&#xe601;</i>) : (<i className='iconfont praise' onClick={this.publishComment.bind(this, 2)}>&#xe601;</i>)
                 }
               </div>
               {
@@ -78,7 +89,7 @@ export default class Collect extends React.Component {
                       <textarea name='' rows='8' ref='commentText'/>
                       <div>
                         <a className='cancel'>收起</a>
-                        <a className='publish' onClick={this.publishComment.bind(this)}>发布</a>
+                        <a className='publish' onClick={this.publishComment.bind(this, 1)}>发布</a>
                       </div>
                     </form>
                   </div>
