@@ -1,0 +1,80 @@
+/*公共顶部*/
+.publicHeader{
+    width: 100%;
+    height: 5rem;
+    background: #24292c;
+    color: #ededed;
+    position: relative;
+    font-size: 16px;
+}
+.publicHeader .box{
+    margin: 0 auto;
+    width: 60rem;
+}
+.publicHeader .logo{
+    font-size: 2rem;
+    display: inline-block;
+    margin: 1.5rem 4rem auto 0;
+    font-family: "SimSun";
+}
+.publicHeader .nav{
+    display: inline-block;
+    a {
+      color: #fff;
+    }
+}
+.publicHeader .nav ul{
+    list-style-type: none;
+}
+.publicHeader .nav ul li{
+  display: inline-block;
+  margin-right: 20px;
+}
+.publicHeader .account{
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    font-size: 0.7rem;
+    i.icon-denglu {
+      position: relative;
+      top: -1px;
+    }
+    .username {
+      cursor: pointer;
+    }
+    .exit {
+      cursor: pointer;
+    }
+}
+.publicHeader .account a{
+    color: #fff;
+    text-decoration: none;
+    margin-right: 10px;
+}
+.publicHeader .personal{
+    margin-right: 4px;
+    font-size: 0.9rem;
+}
+.publicHeader .write{
+    position: fixed;
+    right: 0rem;
+    top:10rem;
+}
+.publicHeader .write i{
+    color: #000;
+    font-size: 2rem;
+}
+.publicHeader .personal-nav{
+    width: 100%;
+    color: #000;
+    border: 1px solid #fff;
+    margin-top: 0.2rem;
+}
+.publicHeader .personal-nav li{
+    padding: 0.15rem 0px;
+    border-radius: 2rem;
+    text-align: center;
+}
+.publicHeader .personal-nav a{
+    margin-right: 0px;
+}

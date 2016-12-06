@@ -1,0 +1,71 @@
+.loginBox {
+  width: 500px;
+  position: absolute;
+  left: 50%;
+  top: 200px;
+  margin-left: -250px;
+  .slogan {
+    text-align: center;
+    font-size: 24px;
+    color: #81a908;
+  }
+  .title {
+    text-align: center;
+    margin: 20px 0px;
+    font-size: 18px;
+    color: #868585;
+    font-weight: bold;
+    span {
+      cursor: pointer;
+    }
+    .stress {
+      color: #555;
+    }
+  }
+  form {
+    margin-top: 10px;
+    .inputBox {
+      width: 280px;
+      height: 40px;
+      margin: 0 auto;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      margin-bottom: 16px;
+      i {
+        display: inline-block;
+        width: 40px;
+        height: 40px;
+        text-align: center;
+        line-height: 40px;
+        border-right: 1px solid #ccc;
+        box-sizing: border-box;
+        color: #555555;
+      }
+      input {
+        display: inline-block;
+        width: 240px;
+        height: 40px;
+        box-sizing: border-box;
+        background: #ededef;
+        border: none;
+        border-radius: 5px;
+        outline: none;
+        vertical-align: top;
+        padding-left: 6px;
+      }
+    }
+    .sub {
+      display: block;
+      margin: 0 auto;
+      width: 280px;
+      height: 50px;
+      background: #81a908;
+      border: none;
+      color: #fff;
+      font-size: 18px;
+      cursor: pointer;
+      text-align: center;
+      line-height: 50px;
+    }
+  }
+}

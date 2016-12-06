@@ -1,0 +1,27 @@
+* {
+  margin: 0px;
+  padding: 0px;
+}
+.container {
+  font-size: 46px;
+
+  .app {
+    $height: 90px;
+    .title {
+      background: #1aad16;
+      color: #fff;
+      height: $height;
+      line-height: $height;
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    .collect {
+      background: #ccc;
+      height: $height;
+      line-height: $height;
+      background: #ccc;
+      text-align: center;
+      margin-bottom: 2px;
+    }
+  }
+}
