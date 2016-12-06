@@ -20,11 +20,19 @@ export default class Collect extends React.Component {
   }
   componentWillMount () {
     const _this = this
-    axios.get(apiUrl.postDetail + this.props.params.id).then(res => {
+    // axios.get(apiUrl.postDetail + this.props.params.id).then(res => {
+    //   console.log(res)
+    //   this.setState({
+    //     is_like: res.data.is_like,
+    //     post: res.data.post,
+    //     interactList: res.data.interact_list
+    //   })
+    // })
+    ajax.get(apiUrl.postDetail + this.props.params.id, {}, (res) => {
       this.setState({
-        is_like: res.data.is_like,
-        post: res.data.post,
-        interactList: res.data.interact_list
+        is_like: res.is_like,
+        post: res.post,
+        interactList: res.interact_list
       })
     })
   }
@@ -61,7 +69,6 @@ export default class Collect extends React.Component {
     })
   }
   render () {
-    console.log(this.state.post, 'sd')
     return (
       <div className='post-detail'>
         <div className='outer'>
@@ -71,7 +78,7 @@ export default class Collect extends React.Component {
                 <p className='title'>{this.state.post.title}</p>
                 <div className='user-info'>
                   <img src='http://cdn.bangyoung.com/cdn/user_portrait/20160902/beijingdaxue/32r2r2r.jpg' alt='' className='host-head' />
-                  <p className='name'>小小鸟</p>
+                  <p className='name'>{this.state.post.username}</p>
                 </div>
               </div>
               <div className='post'>
