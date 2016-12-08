@@ -6,6 +6,7 @@ import axios from 'axios'
 import apiUrl from 'apis/config.js'
 import c from './style.scss'
 import ajax from 'apis/ajax.js'
+import moment from 'moment'
 
 
 export default class Collect extends React.Component {
@@ -15,19 +16,14 @@ export default class Collect extends React.Component {
       post: {},
       interactList: [],
       isShowCommentBox: false,
-      is_like: false
+      is_like: false,
+      replyBoxId: '',
+      atUsername: '',
+      atUserId: ''
     }
   }
   componentWillMount () {
     const _this = this
-    // axios.get(apiUrl.postDetail + this.props.params.id).then(res => {
-    //   console.log(res)
-    //   this.setState({
-    //     is_like: res.data.is_like,
-    //     post: res.data.post,
-    //     interactList: res.data.interact_list
-    //   })
-    // })
     ajax.get(apiUrl.postDetail + this.props.params.id, {}, (res) => {
       this.setState({
         is_like: res.is_like,
@@ -67,6 +63,27 @@ export default class Collect extends React.Component {
         this.setState({is_like: true})
       }
     })
+  }
+  publishReplyInteract (interactId, type) {
+    console.log('sd')
+    ajax.post(apiUrl.replyInteract, {
+      interact_id: interactId,
+      type,
+      content: this.refs.replyInteractCon.value.trim(),
+      at_user_id: this.state.atUserId
+    }, (v) => {
+      console.log(v)
+    })
+  }
+  replyInteract (interactId) {
+    if (interactId === this.state.replyBoxId) {
+      this.setState({replyBoxId: '', atUsername: '', atUserId: ''})
+    } else {
+      this.setState({replyBoxId: interactId, atUsername: '', atUserId: ''})
+    }
+  }
+  atReply (username, userid) {
+    this.setState({atUsername: username, atUserId: userid})
   }
   render () {
     return (
@@ -117,42 +134,55 @@ export default class Collect extends React.Component {
                 <div className='comment'>
                   <div className='comment-box'>
                     <p className='user'>
-                      <span className='name'>{v.username}</span>&nbsp;&nbsp;&nbsp;&nbsp;<span className='time'>sdf</span></p>
+                      <span className='name'>{v.username}</span>&nbsp;&nbsp;&nbsp;&nbsp;<span className='time'>{moment(v.create_at*1000).format('MM-DD hh:mm')}</span></p>
                     <div className='content'>
                       {v.content}
                     </div>
                     <p className='interact'>
                       <span>热度({v.hot})</span>
                       <span>
-                        <a className='reply'>评论({v.comment_count})</a>
+                        <a className='reply' onClick={this.replyInteract.bind(this, v.id)}>评论({v.comment_count})</a>
                       </span>
                         <span>
-                          点赞 <i className='iconfont praise red'>&#xe601;</i>
+                          点赞 <i className={'iconfont praise ' + (v.is_like ? 'red' : '')}>&#xe601;</i>
                           {/* <i className='iconfont praise'>&#xe601;</i> */}
                         </span>
                       </p>
                   </div>
-                  <div className='reply-interact hid clearfix'>
-                    <div className='reply-box clearfix'>
-                      <input type='hidden' className='at-user' />
-                      <input type='text' className='reply-content' />
-                      <a className='publish'>发布</a>
-                    </div>
-                    <ul className='reply-interact-box'>
-                      <li className='clearfix'>
-                        <img src='http://cdn.bangyoung.com/cdn/user_portrait/20160902/beijingdaxue/32r2r2r.jpg' alt='' className='head' />
-                          <p>
-                            <span className='name'>safd</span>
-                              <span>
-                                <span>回复了</span>
-                                <span className='at-username'>sdfsda</span>
-                              </span>
-                              <span>sdf</span>
-                          </p>
-                          <a className='reply'>回复</a>
-                      </li>
-                    </ul>
-                  </div>
+                  {
+                    this.state.replyBoxId === v.id ? (
+                      <div className='reply-interact clearfix'>
+                        <div className='reply-box clearfix'>
+                          <input type='hidden' className='at-user' />
+                          <input type='text' className='reply-content' placeholder = {(this.state.atUsername) ? '@' + this.state.atUsername : ''} ref='replyInteractCon'/>
+                          <a className='publish' onClick={this.publishReplyInteract.bind(this, v.id, 1)}>发布</a>
+                        </div>
+                        <ul className='reply-interact-box'>
+                        {
+                          v.reply_list.map((value) => {
+                            return (
+                              <li className='clearfix' key={value.id}>
+                                <img src='http://cdn.bangyoung.com/cdn/user_portrait/20160902/beijingdaxue/32r2r2r.jpg' alt='' className='head' />
+                                  <p>
+                                    <span className='name'>{value.from_username}</span>
+                                    {value.at_username ? (
+                                      <span>
+                                        <span>&nbsp;回复了&nbsp;</span>
+                                        <span className='at-username'>{value.at_username}</span>
+                                      </span>
+                                    ) : ''}
+                                      <span>&nbsp;{value.content}</span>
+                                  </p>
+                                  <a className='reply' onClick={this.atReply.bind(this, value.from_username, value.from_user_id)}>回复</a>
+                              </li>
+                            )
+                          })
+                        }
+
+                        </ul>
+                      </div>
+                    ) : ''
+                  }
                 </div>
               </div>
             ))

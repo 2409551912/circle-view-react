@@ -129,6 +129,7 @@
 }
 .post-detail .item .comment .interact a{
     color: #aaa;
+    cursor: pointer;
 }
 .post-detail .item .comment .interact span{
     margin-left: 0.8rem;
@@ -137,6 +138,9 @@
     position: relative;
     left: 0rem;
     top: 0rem;
+}
+.post-detail .item .comment .interact .red {
+  color: #f36868;
 }
 .post-detail .item .comment .reply-interact{
     background: #fff;
@@ -166,6 +170,7 @@
 }
 .post-detail .reply-interact-box{
     padding: 1rem 0rem 0rem 0rem;
+    list-style-type: none;
 }
 .post-detail .reply-interact-box li{
     font-size: 0.8rem;
@@ -199,6 +204,7 @@
     float: right;
     display: inline-block;
     line-height: 24px;
+    cursor: pointer;
 }
 /*帖子详情*/
 .post-detail .outer{
@@ -366,6 +372,7 @@
     color: #fff;
     float: right;
     text-align: center;
+    cursor: pointer;
 }
 .post-detail .reply-interact-box{
     padding: 1rem 0rem 0rem 0rem;
