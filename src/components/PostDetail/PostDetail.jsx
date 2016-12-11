@@ -8,7 +8,6 @@ import c from './style.scss'
 import ajax from 'apis/ajax.js'
 import moment from 'moment'
 
-
 export default class Collect extends React.Component {
   constructor (props) {
     super(props)
@@ -16,7 +15,7 @@ export default class Collect extends React.Component {
       post: {},
       interactList: [],
       isShowCommentBox: false,
-      is_like: false,
+      isLike: false,
       replyBoxId: '',
       atUsername: '',
       atUserId: ''
@@ -26,7 +25,7 @@ export default class Collect extends React.Component {
     const _this = this
     ajax.get(apiUrl.postDetail + this.props.params.id, {}, (res) => {
       this.setState({
-        is_like: res.is_like,
+        isLike: res.is_like,
         post: res.post,
         interactList: res.interact_list
       })
@@ -60,19 +59,28 @@ export default class Collect extends React.Component {
         interactList.unshift(v.interact)
         this.setState({isShowCommentBox: false, interactList})
       } else {
-        this.setState({is_like: true})
+        this.setState({isLike: v.interact.status})
       }
     })
   }
   publishReplyInteract (interactId, type) {
-    console.log('sd')
     ajax.post(apiUrl.replyInteract, {
       interact_id: interactId,
       type,
-      content: this.refs.replyInteractCon.value.trim(),
+      content: type === 1 ? this.refs.replyInteractCon.value.trim() : '',
       at_user_id: this.state.atUserId
-    }, (v) => {
-      console.log(v)
+    }, (res) => {
+      const interactList = [...this.state.interactList]
+      const idx = interactList.findIndex(v => v.id === parseInt(res.reply.interact_id))
+      if (res.reply.type === 1) {
+        interactList[idx].reply_list.unshift(res.reply)
+        this.setState({interactList})
+      } else {
+        console.log(res.reply.status)
+        interactList[idx].is_like = res.reply.status
+        this.setState({interactList})
+      }
+
     })
   }
   replyInteract (interactId) {
@@ -83,6 +91,7 @@ export default class Collect extends React.Component {
     }
   }
   atReply (username, userid) {
+    this.refs.replyInteractCon.value = ''
     this.setState({atUsername: username, atUserId: userid})
   }
   render () {
@@ -101,10 +110,7 @@ export default class Collect extends React.Component {
               <div className='post'>
                 <p className='content'>{this.state.post.content}</p>
                 <a className='comment' onClick={this.changeCommentBox.bind(this)}>参与评论</a>
-                {
-                  this.state.is_like ?
-                  (<i className='iconfont praise red'>&#xe601;</i>) : (<i className='iconfont praise' onClick={this.publishComment.bind(this, 2)}>&#xe601;</i>)
-                }
+                <i className={'iconfont praise' + ' ' + (this.state.isLike ? 'red' : null)} onClick={this.publishComment.bind(this, 2)}>&#xe601;</i>
               </div>
               {
                 this.state.isShowCommentBox ? (
@@ -144,7 +150,7 @@ export default class Collect extends React.Component {
                         <a className='reply' onClick={this.replyInteract.bind(this, v.id)}>评论({v.comment_count})</a>
                       </span>
                         <span>
-                          点赞 <i className={'iconfont praise ' + (v.is_like ? 'red' : '')}>&#xe601;</i>
+                          点赞 <i className={'iconfont praise ' + (v.is_like ? 'red' : '')} onClick={this.publishReplyInteract.bind(this, v.id, 2)}>&#xe601;</i>
                           {/* <i className='iconfont praise'>&#xe601;</i> */}
                         </span>
                       </p>
@@ -159,8 +165,8 @@ export default class Collect extends React.Component {
                         </div>
                         <ul className='reply-interact-box'>
                         {
-                          v.reply_list.map((value) => {
-                            return (
+                          v.reply_list.map((value) => value.type === 1 ?
+                            (
                               <li className='clearfix' key={value.id}>
                                 <img src='http://cdn.bangyoung.com/cdn/user_portrait/20160902/beijingdaxue/32r2r2r.jpg' alt='' className='head' />
                                   <p>
@@ -175,8 +181,8 @@ export default class Collect extends React.Component {
                                   </p>
                                   <a className='reply' onClick={this.atReply.bind(this, value.from_username, value.from_user_id)}>回复</a>
                               </li>
-                            )
-                          })
+                            ) : null
+                          )
                         }
 
                         </ul>

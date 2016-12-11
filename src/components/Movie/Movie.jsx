@@ -18,24 +18,24 @@ export default class Movie extends React.Component {
   }
   componentWillMount () {
     const _this = this
-    $.post('http://api.yjshare.com/v1/auth', {
+    $.post('https://api.yjshare.com/v1/auth', {
       auth: 'api.yjshare.com'
     }, (res) => {
       if (res.status === 200) {
         localStorage.setItem('suid', res.data.token)
-        $.get('http://api.yjshare.com/v1/movie/subjects?token=' + localStorage.getItem('suid') + '&p=' + this.state.currentPage, (v) => {
+        $.get('https://api.yjshare.com/v1/movie/subjects?token=' + localStorage.getItem('suid') + '&p=' + this.state.currentPage, (v) => {
           this.setState({movieList: v.data.rows, count: v.data.count})
         })
       }
     })
   }
   download (id) {
-    $.get('http://api.yjshare.com/v1/movie/subject/' + id + '/source?token=' + localStorage.getItem('suid'), (v) => {
+    $.get('https://api.yjshare.com/v1/movie/subject/' + id + '/source?token=' + localStorage.getItem('suid'), (v) => {
       window.location.assign(v.data[0].href)
     })
   }
   handlePageChange (page) {
-    $.get('http://api.yjshare.com/v1/movie/subjects?token=' + localStorage.getItem('suid') + '&p=' + page, (v) => {
+    $.get('https://api.yjshare.com/v1/movie/subjects?token=' + localStorage.getItem('suid') + '&p=' + page, (v) => {
       this.setState({movieList: v.data.rows, count: v.data.count})
     })
     this.setState({currentPage: page})
