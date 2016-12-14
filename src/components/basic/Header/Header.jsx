@@ -49,7 +49,7 @@ export default class Collect extends React.Component {
           )
         }
      </div>
-     <a href="/index/post/publish" className="write">
+     <a href="/publish" className="write">
        <i className="iconfont">&#xe604;</i>
      </a>
 

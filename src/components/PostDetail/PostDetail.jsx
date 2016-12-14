@@ -76,7 +76,6 @@ export default class Collect extends React.Component {
         interactList[idx].reply_list.unshift(res.reply)
         this.setState({interactList})
       } else {
-        console.log(res.reply.status)
         interactList[idx].is_like = res.reply.status
         this.setState({interactList})
       }

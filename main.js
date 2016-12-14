@@ -8,6 +8,7 @@ import Home from './src/components/Home/Home.jsx'
 import PostDetail from './src/components/PostDetail/PostDetail.jsx'
 import Movie from './src/components/Movie/Movie.jsx'
 import Login from './src/components/Login/Login.jsx'
+import PublishPost from './src/components/PublishPost/PublishPost.jsx'
 const defaultState = 0
 
 //配置路由
@@ -18,12 +19,12 @@ const routeConfig = [
     indexRoute: { component: Home },
     childRoutes: [
       { path: 'post/:id', component: PostDetail },
+      { path: 'publish', component: PublishPost },
       { path: 'movie', component: Movie },
       { path: 'login', component: Login }
     ]
   }
 ]
-
 ReactDOM.render(
   <Router history={browserHistory} routes={routeConfig} />, document.getElementById('app')
 )

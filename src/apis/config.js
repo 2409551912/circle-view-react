@@ -5,6 +5,7 @@ const apiUrl = {
   replyPost: __IP__ + '/index/post/reply_post/',
   login: __IP__ + '/index/login/',
   register: __IP__ + '/index/user/register/',
-  replyInteract: __IP__ + '/index/post/reply_post_interact/'
+  replyInteract: __IP__ + '/index/post/reply_post_interact/',
+  publishPost: __IP__ + '/index/post/publish_post/'
 }
 export default apiUrl
