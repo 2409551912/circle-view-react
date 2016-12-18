@@ -49,9 +49,9 @@ export default class Collect extends React.Component {
           )
         }
      </div>
-     <a href="/publish" className="write">
-       <i className="iconfont">&#xe604;</i>
-     </a>
+       <a href={localStorage.getItem('account') ? '/publish' : '/login'} className="write">
+         <i className="iconfont">&#xe604;</i>
+       </a>
 
  </div>
      )

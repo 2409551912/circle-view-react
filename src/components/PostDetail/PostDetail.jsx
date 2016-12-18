@@ -72,9 +72,10 @@ export default class Collect extends React.Component {
     }, (res) => {
       const interactList = [...this.state.interactList]
       const idx = interactList.findIndex(v => v.id === parseInt(res.reply.interact_id))
-      if (res.reply.type === 1) {
+      if (parseInt(res.reply.type) === 1) {
         interactList[idx].reply_list.unshift(res.reply)
         this.setState({interactList})
+        console.log(this.state.interactList)
       } else {
         interactList[idx].is_like = res.reply.status
         this.setState({interactList})
@@ -164,7 +165,7 @@ export default class Collect extends React.Component {
                         </div>
                         <ul className='reply-interact-box'>
                         {
-                          v.reply_list.map((value) => value.type === 1 ?
+                          v.reply_list.map((value) => parseInt(value.type) === 1 ?
                             (
                               <li className='clearfix' key={value.id}>
                                 <img src='http://cdn.bangyoung.com/cdn/user_portrait/20160902/beijingdaxue/32r2r2r.jpg' alt='' className='head' />
