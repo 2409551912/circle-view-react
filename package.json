@@ -4,7 +4,8 @@
   "description": "私人博客",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server --hot --content-base . --history-api-fallback"
+    "start": "webpack-dev-server --hot --content-base . --history-api-fallback",
+    "build": "webpack"
   },
   "author": "胡亚伟",
   "license": "ISC",
