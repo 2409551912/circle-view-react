@@ -5,7 +5,7 @@ const config = {
   entry: './main.js',
 
   output: {
-    path: './',
+    path: path.join(__dirname, 'dist'),
     filename: 'index.js'
   },
 
@@ -41,7 +41,15 @@ const config = {
       apis: path.join(__dirname, "./src/apis"),
       components: path.join(__dirname, "./src/components")
     }
-  }
+  },
+  plugins: [
+    new webpack.optimize.UglifyJsPlugin({
+      compressor: {
+        warnings: false
+      }
+    }),
+    new webpack.optimize.OccurenceOrderPlugin()
+  ]
 }
 
 module.exports = config
