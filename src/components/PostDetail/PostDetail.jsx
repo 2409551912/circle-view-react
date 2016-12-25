@@ -7,7 +7,6 @@ import apiUrl from 'apis/config.js'
 import c from './style.scss'
 import ajax from 'apis/ajax.js'
 import moment from 'moment'
-
 export default class Collect extends React.Component {
   constructor (props) {
     super(props)
